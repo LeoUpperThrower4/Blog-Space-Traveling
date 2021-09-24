@@ -2,17 +2,32 @@ import { FiUser, FiCalendar } from 'react-icons/fi';
 
 import styles from './styles.module.scss';
 
-export function PostListItem(): JSX.Element {
+// Terceiro lugar que eu uso a mesma interface para o mesmo intuito...
+interface Post {
+  uid?: string;
+  first_publication_date: string | null;
+  data: {
+    title: string;
+    subtitle: string;
+    author: string;
+  };
+}
+
+interface PostListItemProps {
+  post: Post;
+}
+
+export function PostListItem({ post }: PostListItemProps): JSX.Element {
   return (
     <li className={styles.container}>
       <div className={styles.content}>
-        <h2>Como utilizar Hooks</h2>
-        <p>Pensando em sincronização em vez de ciclos de vida</p>
+        <h2>{post.data.title}</h2>
+        <p>{post.data.subtitle}</p>
         <div className={styles.info}>
           <FiCalendar color="#bbb" />
-          <time>15 Mar 2021</time>
+          <time>{post.first_publication_date}</time>
           <FiUser color="#bbb" />
-          <p>Leonardo Silva</p>
+          <p>{post.data.author}</p>
         </div>
       </div>
     </li>
