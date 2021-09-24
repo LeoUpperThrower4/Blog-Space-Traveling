@@ -1,0 +1,39 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  h2 {
+    font-size: 1.75rem;
+    font-weight: bold;
+    color: var(--heading);
+  }
+
+  p {
+    font-size: 1.125rem;
+    color: var(--body);
+    margin-bottom: 1rem;
+  }
+
+  .info {
+    display: flex;
+
+    svg {
+      margin-right: 0.5rem;
+    }
+
+    time {
+      margin-right: 1.5rem;
+    }
+
+    time,
+    p {
+      color: var(--info);
+    }
+
+    p {
+      display: inline;
+      line-height: 1rem;
+    }
+  }
+}
