@@ -11,6 +11,7 @@
 
 > Website de leitura de notícias
 
+O space traveling é um blog feito do zero usando Next.js e Prismic CMS. Ele é o desafio principal do capítulo III da trilha de React.js do curso Ignite, da Rocketseat. Seu design pode ser encontrado [aqui](https://www.figma.com/file/6lOST9XhVxBPbF0gpyclqR/Desafios-Módulo-3-ReactJS?node-id=0%3A1)
 ## 💻 Tecnologias
 
 Foram usadas, principalmente, duas tecnologias:
