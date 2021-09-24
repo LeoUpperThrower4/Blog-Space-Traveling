@@ -5,6 +5,8 @@
 
 .content {
   button {
+    cursor: pointer;
+
     font-weight: 600;
     font-size: 1.125rem;
     color: var(--highlight);
@@ -13,5 +15,10 @@
     border: 0;
 
     margin-top: 4rem;
+
+    transition: filter 0.2s;
+    &:hover {
+      filter: brightness(0.8);
+    }
   }
 }

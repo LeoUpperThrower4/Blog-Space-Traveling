@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import { FiUser, FiCalendar } from 'react-icons/fi';
 
 import styles from './styles.module.scss';
@@ -18,9 +19,21 @@ interface PostListItemProps {
 }
 
 export function PostListItem({ post }: PostListItemProps): JSX.Element {
+  const router = useRouter();
+
+  function handlePostClick(): void {
+    router.push(`/post/${post.uid}`);
+  }
+
   return (
-    <li className={styles.container}>
-      <div className={styles.content}>
+    <li>
+      <div
+        role="button"
+        className={styles.content}
+        onClick={handlePostClick}
+        onKeyDown={handlePostClick}
+        tabIndex={0}
+      >
         <h2>{post.data.title}</h2>
         <p>{post.data.subtitle}</p>
         <div className={styles.info}>
