@@ -1,7 +1,6 @@
 import { GetStaticProps } from 'next';
-
+import { PostList } from '../components/PostList';
 import { getPrismicClient } from '../services/prismic';
-
 import commonStyles from '../styles/common.module.scss';
 import styles from './home.module.scss';
 
@@ -20,13 +19,20 @@ interface PostPagination {
   results: Post[];
 }
 
-interface HomeProps {
-  postsPagination: PostPagination;
-}
-
-// export default function Home() {
-//   // TODO
+// interface HomeProps {
+// postsPagination: PostPagination;
 // }
+
+export default function Home(): JSX.Element {
+  return (
+    <div className={styles.container}>
+      <div className={styles.content}>
+        <PostList />
+        <button type="button">Carregar mais posts</button>
+      </div>
+    </div>
+  );
+}
 
 // export const getStaticProps = async () => {
 //   // const prismic = getPrismicClient();
