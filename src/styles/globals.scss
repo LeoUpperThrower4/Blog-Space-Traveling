@@ -1,7 +1,35 @@
+:root {
+  --background: #1a1d23;
+  --highlight: #ff57b2;
+  --heading: #f8f8f8;
+  --info: #bbb;
+  --body: #d7d7d7d7;
+}
+
+@media (max-width: 1080px) {
+  html {
+    font-size: 93.75%;
+  }
+}
+@media (max-width: 720px) {
+  html {
+    font-size: 87.5%;
+  }
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-// TODO
+ul {
+  list-style: none;
+}
+
+body {
+  margin: 5rem 0;
+  background-color: var(--background);
+
+  font-family: Inter;
+}
