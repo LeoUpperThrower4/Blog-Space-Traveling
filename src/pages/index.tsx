@@ -23,7 +23,7 @@ interface PostPagination {
 }
 
 interface HomeProps {
-  initialPostsPagination: PostPagination;
+  postsPagination: PostPagination;
 }
 
 function treatPosts(posts: Post[]): Post[] {
@@ -42,23 +42,19 @@ function treatPosts(posts: Post[]): Post[] {
   return results;
 }
 
-export default function Home({
-  initialPostsPagination,
-}: HomeProps): JSX.Element {
-  const [loadedPosts, setLoadedPosts] = useState(
-    initialPostsPagination.results
-  );
-  const [nextPage, setNextPage] = useState(initialPostsPagination.next_page);
+export default function Home({ postsPagination }: HomeProps): JSX.Element {
+  const [loadedPosts, setLoadedPosts] = useState(postsPagination.results);
+  const [nextPage, setNextPage] = useState(postsPagination.next_page);
 
   async function handleLoadMorePostsAsync(): Promise<void> {
-    const postsPagination = (await (
+    const fetchedPostsPagination = (await (
       await fetch(nextPage)
     ).json()) as PostPagination;
 
-    const treatedNewPosts = treatPosts(postsPagination.results);
+    const treatedNewPosts = treatPosts(fetchedPostsPagination.results);
 
     setLoadedPosts([...loadedPosts, ...treatedNewPosts]);
-    setNextPage(postsPagination.next_page);
+    setNextPage(fetchedPostsPagination.next_page);
   }
 
   return (
@@ -84,14 +80,14 @@ export const getStaticProps: GetStaticProps = async () => {
 
   const results = treatPosts(postsResponse.results);
 
-  const initialPostsPagination = {
+  const postsPagination = {
     next_page: postsResponse.next_page,
     results,
   };
 
   return {
     props: {
-      initialPostsPagination,
+      postsPagination,
     },
     revalidate: 60, // 1 minuto
   };
