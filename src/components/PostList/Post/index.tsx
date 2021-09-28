@@ -26,7 +26,7 @@ export function PostListItem({ post }: PostListItemProps): JSX.Element {
   }
 
   return (
-    <li>
+    <li key={post.uid}>
       <div
         role="button"
         className={styles.content}
