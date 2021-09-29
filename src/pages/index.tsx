@@ -45,7 +45,9 @@ function treatPosts(posts: Post[]): Post[] {
 }
 
 export default function Home({ postsPagination }: HomeProps): JSX.Element {
-  const [loadedPosts, setLoadedPosts] = useState(postsPagination.results);
+  const [loadedPosts, setLoadedPosts] = useState(
+    treatPosts(postsPagination.results)
+  );
   const [nextPage, setNextPage] = useState(postsPagination.next_page);
 
   const router = useRouter();
@@ -106,11 +108,9 @@ export const getStaticProps: GetStaticProps = async () => {
     { pageSize: 5 }
   );
 
-  const treatedPosts = treatPosts(results);
-
   const postsPagination = {
     next_page,
-    results: treatedPosts,
+    results,
   };
 
   return {
