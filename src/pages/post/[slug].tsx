@@ -10,6 +10,7 @@ import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 
 import { FiCalendar, FiUser, FiClock } from 'react-icons/fi';
+import CommentsBox from '../../components/CommentsBox';
 import { getPrismicClient } from '../../services/prismic';
 
 import styles from './post.module.scss';
@@ -97,6 +98,7 @@ export default function Post({ post }: PostProps): JSX.Element {
             </article>
           ))}
         </main>
+        <CommentsBox />
       </div>
     </>
   );
