@@ -3,12 +3,12 @@ import styles from './header.module.scss';
 
 export function Header(): JSX.Element {
   return (
-    <div className={styles.container}>
-      <Link href="/">
-        <a>
+    <Link href="/">
+      <a>
+        <div className={styles.container}>
           <img alt="logo" src="/logo.svg" />
-        </a>
-      </Link>
-    </div>
+        </div>
+      </a>
+    </Link>
   );
 }

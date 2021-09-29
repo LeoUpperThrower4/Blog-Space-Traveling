@@ -4,6 +4,51 @@
 }
 
 .content {
+  ul {
+    color: var(--body);
+
+    li > div {
+      cursor: pointer;
+
+      transition: filter 0.2s;
+
+      &:hover {
+        filter: brightness(0.6);
+      }
+
+      h1 {
+        color: var(--heading);
+        font-size: 1.75rem;
+
+        margin-bottom: 0.5rem;
+      }
+
+      > p {
+        font-size: 1.125rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .info {
+        display: flex;
+        align-items: center;
+
+        svg {
+          margin-right: 0.5rem;
+        }
+
+        p,
+        time {
+          font-size: 0.875rem;
+          margin-right: 1.5rem;
+        }
+      }
+    }
+
+    li + li {
+      margin-top: 3rem;
+    }
+  }
+
   button {
     cursor: pointer;
 
@@ -17,6 +62,7 @@
     margin-top: 4rem;
 
     transition: filter 0.2s;
+
     &:hover {
       filter: brightness(0.8);
     }
