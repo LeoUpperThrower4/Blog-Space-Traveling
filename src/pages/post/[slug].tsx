@@ -1,8 +1,12 @@
 /* eslint-disable react/no-danger */
-import { GetServerSideProps, GetStaticPaths, GetStaticProps } from 'next';
 import Head from 'next/head';
-import { format } from 'date-fns';
+import { GetStaticPaths, GetStaticProps } from 'next';
+import { useRouter } from 'next/router';
+
+import Prismic from '@prismicio/client';
 import { RichText } from 'prismic-dom';
+
+import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 
 import { FiCalendar, FiUser, FiClock } from 'react-icons/fi';
@@ -14,7 +18,7 @@ interface Post {
   first_publication_date: string | null;
   data: {
     title: string;
-    image: {
+    banner: {
       url: string;
     };
     author: string;
@@ -32,29 +36,50 @@ interface PostProps {
 }
 
 export default function Post({ post }: PostProps): JSX.Element {
+  const router = useRouter();
+
+  if (router.isFallback) {
+    return <h1>Carregando...</h1>;
+  }
+
   const timeToRead = Math.ceil(
     post.data.content.reduce((prev, curr) => {
       return prev + RichText.asText(curr.body).split(' ').length;
     }, 0) / 200
   );
+
+  const formattedPost = {
+    ...post,
+    first_publication_date: format(
+      new Date(post.first_publication_date),
+      'PP',
+      {
+        locale: ptBR,
+      }
+    ),
+  };
+
   return (
     <>
       <Head>
-        <title>spacetraveling | {post.data.title}</title>
+        <title>spacetraveling | {formattedPost.data.title}</title>
       </Head>
       <div className={styles.container}>
-        <img src={post.data.image.url ?? ''} alt={post.data.title} />
+        <img
+          src={formattedPost.data.banner.url ?? ''}
+          alt={formattedPost.data.title}
+        />
         <main className={styles.main}>
           <div className={styles.header}>
-            <h1>{post.data.title}</h1>
+            <h1>{formattedPost.data.title}</h1>
             <div className={styles.info}>
               <div>
                 <FiCalendar />
-                <span>{post.first_publication_date}</span>
+                <span>{formattedPost.first_publication_date}</span>
               </div>
               <div>
                 <FiUser />
-                <span>{post.data.author}</span>
+                <span>{formattedPost.data.author}</span>
               </div>
               <div>
                 <FiClock />
@@ -62,7 +87,7 @@ export default function Post({ post }: PostProps): JSX.Element {
               </div>
             </div>
           </div>
-          {post.data.content.map(item => (
+          {formattedPost.data.content.map(item => (
             <article>
               <h2 dangerouslySetInnerHTML={{ __html: item.heading }} />
               <div
@@ -78,11 +103,17 @@ export default function Post({ post }: PostProps): JSX.Element {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  // const prismic = getPrismicClient();
-  // const posts = await prismic.query();
+  const prismic = getPrismicClient();
+  const posts = (
+    await prismic.query(Prismic.Predicates.at('document.type', 'post'), {
+      pageSize: 5,
+    })
+  ).results;
 
   return {
-    paths: [],
+    paths: posts.map(post => {
+      return { params: { slug: post.uid } };
+    }),
     fallback: true,
   };
 };
@@ -90,25 +121,14 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async context => {
   const prismic = getPrismicClient();
   const { slug } = context.params;
-  const response = (await prismic.getByUID('post', slug as string, {
+  const post = (await prismic.getByUID('post', slug as string, {
     lang: 'pt-br',
   })) as Post;
-
-  const post = {
-    ...response,
-    first_publication_date: format(
-      new Date(response.first_publication_date),
-      'PP',
-      {
-        locale: ptBR,
-      }
-    ),
-  };
 
   return {
     props: {
       post,
     },
-    revalidate: 60 * 60 * 24, // 24 horas
+    revalidate: 60 * 60, // 1 hora
   };
 };
