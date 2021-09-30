@@ -14,21 +14,26 @@
 O space traveling é um blog feito do zero usando Next.js e Prismic CMS. Ele é o desafio principal do capítulo III da trilha de React.js do curso Ignite, da Rocketseat. Seu design pode ser encontrado [aqui](https://www.figma.com/file/6lOST9XhVxBPbF0gpyclqR/Desafios-Módulo-3-ReactJS?node-id=0%3A1)
 
 O desafio principal consistiu na criação de um blog do zero seguindo o [layout fornecido](https://www.figma.com/file/6lOST9XhVxBPbF0gpyclqR/Desafios-Módulo-3-ReactJS?node-id=0%3A1). Já o desafio complementar consistiu na implementação de novas features nesse blog.
+
 #### Tarefas principais
-- [X] Estilizações global, comun e individuais;
-- [X] Importação de fontes Google;
-- [X] Paginação de posts;
-- [X] Cálculo de tempo estimado de leitura do post;
-- [X] Geração de páginas estáticas com os métodos `getStaticProps` e `getStaticPaths`;
-- [X] Formatação de datas com `date-fns`;
-- [X] Uso de ícones com `react-icons`;
-- [X] Requisições HTTP com `fetch`;
+
+- [x] Estilizações global, comun e individuais;
+- [x] Importação de fontes Google;
+- [x] Paginação de posts;
+- [x] Cálculo de tempo estimado de leitura do post;
+- [x] Geração de páginas estáticas com os métodos `getStaticProps` e `getStaticPaths`;
+- [x] Formatação de datas com `date-fns`;
+- [x] Uso de ícones com `react-icons`;
+- [x] Requisições HTTP com `fetch`;
 - Entre outros.
+
 #### Tarefas complementares
-- [X] Comentários com [Utteranc](https://utteranc.es/);
-- [X] Preview do documento Prismic;
-- [ ] Navegação entre post anterior e próximo;
-- [X] Informação de edição do post.
+
+- [x] Comentários com [Utteranc](https://utteranc.es/);
+- [x] Preview do documento Prismic;
+- [x] Navegação entre post anterior e próximo;
+- [x] Informação de edição do post.
+
 ## 💻 Tecnologias
 
 Foram usadas, principalmente, duas tecnologias:
