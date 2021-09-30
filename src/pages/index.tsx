@@ -10,6 +10,7 @@ import Prismic from '@prismicio/client';
 import { getPrismicClient } from '../services/prismic';
 
 import styles from './home.module.scss';
+import LeavePreviewButton from '../components/LeavePreviewButton';
 
 interface Post {
   uid?: string;
@@ -93,14 +94,8 @@ export default function Home({
             </button>
           )}
         </div>
+        {preview && <LeavePreviewButton />}
       </main>
-      {preview && (
-        <aside>
-          <Link href="/api/exit-preview">
-            <a>Sair do modo Preview</a>
-          </Link>
-        </aside>
-      )}
     </>
   );
 }
