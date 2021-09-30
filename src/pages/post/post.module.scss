@@ -33,6 +33,12 @@
         font-weight: bold;
       }
 
+      > p {
+        color: var(--info);
+        font-size: 0.875rem;
+        font-style: italic;
+      }
+
       .info {
         display: flex;
         gap: 1.5rem;
