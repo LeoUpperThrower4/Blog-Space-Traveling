@@ -18,8 +18,6 @@ import styles from './post.module.scss';
 
 interface Post {
   first_publication_date: string | null;
-  // talvez tenha que tirar para os testes iniciais
-  last_publication_date: string | null;
   data: {
     title: string;
     banner: {
@@ -62,13 +60,6 @@ export default function Post({ post, preview }: PostProps): JSX.Element {
         locale: ptBR,
       }
     ),
-    last_publication_date: format(
-      new Date(post.last_publication_date),
-      "PP', às 'k':'m",
-      {
-        locale: ptBR,
-      }
-    ),
   };
 
   return (
@@ -98,9 +89,6 @@ export default function Post({ post, preview }: PostProps): JSX.Element {
                 <span>{timeToRead} min</span>
               </div>
             </div>
-            {post.last_publication_date !== post.first_publication_date && (
-              <p>* editado em {formattedPost.last_publication_date}</p>
-            )}
           </div>
           {formattedPost.data.content.map(item => (
             <article>
