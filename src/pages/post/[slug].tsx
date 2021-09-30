@@ -10,6 +10,7 @@ import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 
 import { FiCalendar, FiUser, FiClock } from 'react-icons/fi';
+import CommentsBox from '../../components/CommentsBox';
 import { getPrismicClient } from '../../services/prismic';
 
 import styles from './post.module.scss';
@@ -97,6 +98,7 @@ export default function Post({ post }: PostProps): JSX.Element {
             </article>
           ))}
         </main>
+        <CommentsBox />
       </div>
     </>
   );
@@ -118,11 +120,16 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export const getStaticProps: GetStaticProps = async context => {
+export const getStaticProps: GetStaticProps = async ({
+  previewData,
+  params,
+}) => {
   const prismic = getPrismicClient();
-  const { slug } = context.params;
+  const { slug } = params;
+
   const post = (await prismic.getByUID('post', slug as string, {
     lang: 'pt-br',
+    ref: previewData?.ref ?? null,
   })) as Post;
 
   return {
