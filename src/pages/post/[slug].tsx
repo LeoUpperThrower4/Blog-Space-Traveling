@@ -15,10 +15,10 @@ import CommentsBox from '../../components/CommentsBox';
 import { getPrismicClient } from '../../services/prismic';
 
 import styles from './post.module.scss';
+import LeavePreviewButton from '../../components/LeavePreviewButton';
 
 interface Post {
   first_publication_date: string | null;
-  // talvez tenha que tirar para os testes iniciais
   last_publication_date: string | null;
   data: {
     title: string;
@@ -33,14 +33,23 @@ interface Post {
       }[];
     }[];
   };
+  uid?: string;
+  id: string;
 }
 
 interface PostProps {
   post: Post;
   preview: boolean;
+  prevPost?: Post;
+  nextPost?: Post;
 }
 
-export default function Post({ post, preview }: PostProps): JSX.Element {
+export default function Post({
+  post,
+  preview,
+  prevPost,
+  nextPost,
+}: PostProps): JSX.Element {
   const router = useRouter();
 
   if (router.isFallback) {
@@ -112,15 +121,31 @@ export default function Post({ post, preview }: PostProps): JSX.Element {
             </article>
           ))}
         </main>
-        <CommentsBox />
-      </div>
-      {preview && (
         <aside>
-          <Link href="/api/exit-preview">
-            <a>Sair do modo Preview</a>
-          </Link>
+          <div className={styles.postsNavigation}>
+            {prevPost ? (
+              <Link href={`/post/${prevPost.uid}`}>
+                <div>
+                  <h3>{prevPost.data.title}</h3>
+                  <button type="button">Post anterior</button>
+                </div>
+              </Link>
+            ) : (
+              <div />
+            )}
+            {nextPost && (
+              <Link href={`/post/${nextPost.uid}`}>
+                <div>
+                  <h3>{nextPost.data.title}</h3>
+                  <button type="button">Próximo post</button>
+                </div>
+              </Link>
+            )}
+          </div>
+          <CommentsBox />
+          {preview && <LeavePreviewButton />}
         </aside>
-      )}
+      </div>
     </>
   );
 }
@@ -154,10 +179,28 @@ export const getStaticProps: GetStaticProps = async ({
     ref: previewData?.ref ?? null,
   })) as Post;
 
+  const prevPost = (
+    await prismic.query(Prismic.Predicates.at('document.type', 'post'), {
+      pageSize: 1,
+      after: `${post.id}`,
+      orderings: '[document.first_publication_date desc]',
+    })
+  ).results[0];
+
+  const nextPost = (
+    await prismic.query(Prismic.Predicates.at('document.type', 'post'), {
+      pageSize: 1,
+      after: `${post.id}`,
+      orderings: '[document.first_publication_date]',
+    })
+  ).results[0];
+
   return {
     props: {
       post,
       preview,
+      prevPost: prevPost ?? null,
+      nextPost: nextPost ?? null,
     },
     revalidate: 60 * 60, // 1 hora
   };
