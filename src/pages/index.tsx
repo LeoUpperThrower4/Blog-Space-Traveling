@@ -27,7 +27,7 @@ interface PostPagination {
 
 interface HomeProps {
   postsPagination: PostPagination;
-  preview: boolean;
+  preview?: boolean;
 }
 
 function treatPosts(posts: Post[]): Post[] {
@@ -55,12 +55,6 @@ export default function Home({
   );
   const [nextPage, setNextPage] = useState(postsPagination.next_page);
 
-  const router = useRouter();
-
-  function handlePostClick(id: string): void {
-    router.push(`/post/${id}`);
-  }
-
   async function handleLoadMorePostsAsync(): Promise<void> {
     const fetchedPostsPagination = (await (
       await fetch(nextPage)
@@ -78,13 +72,8 @@ export default function Home({
         <div className={styles.content}>
           <ul>
             {loadedPosts.map(post => (
-              <li key={post.uid}>
-                <div
-                  role="button"
-                  onClick={() => handlePostClick(post.uid)}
-                  onKeyDown={() => handlePostClick(post.uid)}
-                  tabIndex={0}
-                >
+              <Link href={`/post/${post.uid}`}>
+                <li key={post.uid}>
                   <h1>{post.data.title}</h1>
                   <p>{post.data.subtitle}</p>
                   <div className={styles.info}>
@@ -93,8 +82,8 @@ export default function Home({
                     <FiUser color="#bbb" />
                     <p>{post.data.author}</p>
                   </div>
-                </div>
-              </li>
+                </li>
+              </Link>
             ))}
           </ul>
           {nextPage && (
