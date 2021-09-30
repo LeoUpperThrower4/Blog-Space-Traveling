@@ -15,20 +15,20 @@ O space traveling é um blog feito do zero usando Next.js e Prismic CMS. Ele é 
 
 O desafio principal consistiu na criação de um blog do zero seguindo o [layout fornecido](https://www.figma.com/file/6lOST9XhVxBPbF0gpyclqR/Desafios-Módulo-3-ReactJS?node-id=0%3A1). Já o desafio complementar consistiu na implementação de novas features nesse blog.
 #### Tarefas principais
-- Estilizações global, comun e individuais;
-- Importação de fontes Google;
-- Paginação de posts;
-- Cálculo de tempo estimado de leitura do post;
-- Geração de páginas estáticas com os métodos `getStaticProps` e `getStaticPaths`;
-- Formatação de datas com `date-fns`;
-- Uso de ícones com `react-icons`;
-- Requisições HTTP com `fetch`;
+- [X] Estilizações global, comun e individuais;
+- [X] Importação de fontes Google;
+- [X] Paginação de posts;
+- [X] Cálculo de tempo estimado de leitura do post;
+- [X] Geração de páginas estáticas com os métodos `getStaticProps` e `getStaticPaths`;
+- [X] Formatação de datas com `date-fns`;
+- [X] Uso de ícones com `react-icons`;
+- [X] Requisições HTTP com `fetch`;
 - Entre outros.
 #### Tarefas complementares
-- Comentários com [Utteranc](https://utteranc.es/);
-- Preview do documento Prismic;
-- Navegação entre post anterior e próximo;
-- Informação de edição do post.
+- [X] Comentários com [Utteranc](https://utteranc.es/);
+- [X] Preview do documento Prismic;
+- [ ] Navegação entre post anterior e próximo;
+- [X] Informação de edição do post.
 ## 💻 Tecnologias
 
 Foram usadas, principalmente, duas tecnologias:
