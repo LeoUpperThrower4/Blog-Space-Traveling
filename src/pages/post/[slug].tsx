@@ -1,7 +1,8 @@
 /* eslint-disable react/no-danger */
-import Head from 'next/head';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
+import Link from 'next/link';
 
 import Prismic from '@prismicio/client';
 import { RichText } from 'prismic-dom';
@@ -34,9 +35,10 @@ interface Post {
 
 interface PostProps {
   post: Post;
+  preview: boolean;
 }
 
-export default function Post({ post }: PostProps): JSX.Element {
+export default function Post({ post, preview }: PostProps): JSX.Element {
   const router = useRouter();
 
   if (router.isFallback) {
@@ -100,6 +102,13 @@ export default function Post({ post }: PostProps): JSX.Element {
         </main>
         <CommentsBox />
       </div>
+      {preview && (
+        <aside>
+          <Link href="/api/exit-preview">
+            <a>Sair do modo Preview</a>
+          </Link>
+        </aside>
+      )}
     </>
   );
 }
@@ -121,6 +130,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async ({
+  preview = false,
   previewData,
   params,
 }) => {
@@ -135,6 +145,7 @@ export const getStaticProps: GetStaticProps = async ({
   return {
     props: {
       post,
+      preview,
     },
     revalidate: 60 * 60, // 1 hora
   };
