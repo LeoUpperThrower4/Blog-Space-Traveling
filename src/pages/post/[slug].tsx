@@ -120,11 +120,16 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export const getStaticProps: GetStaticProps = async context => {
+export const getStaticProps: GetStaticProps = async ({
+  previewData,
+  params,
+}) => {
   const prismic = getPrismicClient();
-  const { slug } = context.params;
+  const { slug } = params;
+
   const post = (await prismic.getByUID('post', slug as string, {
     lang: 'pt-br',
+    ref: previewData?.ref ?? null,
   })) as Post;
 
   return {

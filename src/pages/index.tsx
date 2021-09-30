@@ -5,6 +5,7 @@ import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 import { FiCalendar, FiUser } from 'react-icons/fi';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 import styles from './home.module.scss';
 import { getPrismicClient } from '../services/prismic';
@@ -26,6 +27,7 @@ interface PostPagination {
 
 interface HomeProps {
   postsPagination: PostPagination;
+  preview: boolean;
 }
 
 function treatPosts(posts: Post[]): Post[] {
@@ -44,7 +46,10 @@ function treatPosts(posts: Post[]): Post[] {
   return results;
 }
 
-export default function Home({ postsPagination }: HomeProps): JSX.Element {
+export default function Home({
+  postsPagination,
+  preview,
+}: HomeProps): JSX.Element {
   const [loadedPosts, setLoadedPosts] = useState(
     treatPosts(postsPagination.results)
   );
@@ -68,44 +73,59 @@ export default function Home({ postsPagination }: HomeProps): JSX.Element {
   }
 
   return (
-    <main className={styles.container}>
-      <div className={styles.content}>
-        <ul>
-          {loadedPosts.map(post => (
-            <li key={post.uid}>
-              <div
-                role="button"
-                onClick={() => handlePostClick(post.uid)}
-                onKeyDown={() => handlePostClick(post.uid)}
-                tabIndex={0}
-              >
-                <h1>{post.data.title}</h1>
-                <p>{post.data.subtitle}</p>
-                <div className={styles.info}>
-                  <FiCalendar color="#bbb" />
-                  <time>{post.first_publication_date}</time>
-                  <FiUser color="#bbb" />
-                  <p>{post.data.author}</p>
+    <>
+      <main className={styles.container}>
+        <div className={styles.content}>
+          <ul>
+            {loadedPosts.map(post => (
+              <li key={post.uid}>
+                <div
+                  role="button"
+                  onClick={() => handlePostClick(post.uid)}
+                  onKeyDown={() => handlePostClick(post.uid)}
+                  tabIndex={0}
+                >
+                  <h1>{post.data.title}</h1>
+                  <p>{post.data.subtitle}</p>
+                  <div className={styles.info}>
+                    <FiCalendar color="#bbb" />
+                    <time>{post.first_publication_date}</time>
+                    <FiUser color="#bbb" />
+                    <p>{post.data.author}</p>
+                  </div>
                 </div>
-              </div>
-            </li>
-          ))}
-        </ul>
-        {nextPage && (
-          <button type="button" onClick={() => handleLoadMorePostsAsync()}>
-            Carregar mais posts
-          </button>
-        )}
-      </div>
-    </main>
+              </li>
+            ))}
+          </ul>
+          {nextPage && (
+            <button type="button" onClick={() => handleLoadMorePostsAsync()}>
+              Carregar mais posts
+            </button>
+          )}
+        </div>
+      </main>
+      {preview && (
+        <aside>
+          <Link href="/api/exit-preview">
+            <a>Sair do modo Preview</a>
+          </Link>
+        </aside>
+      )}
+    </>
   );
 }
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps<HomeProps> = async ({
+  preview = false,
+  previewData,
+}) => {
   const prismic = getPrismicClient();
   const { next_page, results } = await prismic.query(
     Prismic.Predicates.at('document.type', 'post'),
-    { pageSize: 5 }
+    {
+      pageSize: 5,
+      ref: previewData?.ref ?? null,
+    }
   );
 
   const postsPagination = {
@@ -116,6 +136,7 @@ export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {
       postsPagination,
+      preview,
     },
     revalidate: 60, // 1 minuto
   };
